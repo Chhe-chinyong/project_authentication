@@ -13,7 +13,6 @@ router.post('/register',async(req,res,next)=>{
     if(emailExist){
         res.send('Your email is exist');
     }
-
     const usernameExist=await User.findOne({username:req.body.username});
     if(usernameExist){
         res.send('Your username is exist');
@@ -38,7 +37,21 @@ router.post('/register',async(req,res,next)=>{
 });
 
 router.post('/login',async(req,res,next)=>{
+    const {error}=loginValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
 
-});
+        const check=await User.findOne({username:req.body.username});
+        if(check){
+        const match = await bcrypt.compare(req.body.password, check.password);
+     
+        if(match) {
+            res.send('Loggin');
+            }
+        else{
+            res.send('The password you’ve entered is incorrect');
+        }
+        }
+        else return res.send('The Email you’ve entered is incorrect.')});
+        
 
 module.exports=router;

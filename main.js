@@ -10,6 +10,5 @@ mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>{
 
 app.use(express.json());
 app.use('/api',require('./routes/register'));
-
 const Port=process.env.port||5000;
 app.listen(Port,()=> console.log(`localhost://${Port}  ${moment().format()}`));
