@@ -13,6 +13,7 @@ router.post('/register',async(req,res,next)=>{
     if(emailExist){
         res.send('Your email is exist');
     }
+
     const usernameExist=await User.findOne({username:req.body.username});
     if(usernameExist){
         res.send('Your username is exist');
