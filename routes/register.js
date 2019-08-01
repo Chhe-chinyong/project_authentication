@@ -2,6 +2,7 @@ const express=require('express');
 const router=express.Router();
 const User=require('../model/user');
 const bcrypt = require('bcrypt');
+const jwt=require('jsonwebtoken');
 //Validation
 const {registerValidation,loginValidation}=require('../validation');
 
@@ -9,15 +10,20 @@ const {registerValidation,loginValidation}=require('../validation');
 //Register
 router.post('/register',async(req,res,next)=>{
     const {error}=registerValidation(req.body);
-    const emailExist=await User.findOne({email:req.body.email});
-    if(emailExist){
-        res.send('Your email is exist');
-    }
-    const usernameExist=await User.findOne({username:req.body.username});
-    if(usernameExist){
-        res.send('Your username is exist');
-    }
     if(error) {return res.status(400).send(error.details[0].message);}
+    
+    const emailExist=await User.findOne({email:req.body.email});
+    
+    if(emailExist){
+      return res.status(400).send('Your email is exist');
+    }
+
+    const usernameExist=await User.findOne({username:req.body.username});
+    
+    if(usernameExist){
+        return res.status(400).send('Your username is exist');
+    }
+
     const salt=await bcrypt.genSalt(10);
     const hash_pass=await bcrypt.hash(req.body.password,salt);
 
@@ -26,11 +32,11 @@ router.post('/register',async(req,res,next)=>{
         password:hash_pass,
         email:req.body.email
     });
-        
-    try{
-        const saveuser=await user.save();
+    try{   
+    const saveuser=await user.save();
         res.send(saveuser);
     }
+      
     catch(err){
         res.status(400).send(err);
     }
@@ -41,17 +47,14 @@ router.post('/login',async(req,res,next)=>{
     if(error) return res.status(400).send(error.details[0].message);
 
         const check=await User.findOne({username:req.body.username});
-        if(check){
+        if(!check) return res.status(400).send('The Username you’ve entered is incorrect.');
         const match = await bcrypt.compare(req.body.password, check.password);
-     
-        if(match) {
-            res.send('Loggin');
-            }
-        else{
-            res.send('The password you’ve entered is incorrect');
-        }
-        }
-        else return res.send('The Email you’ve entered is incorrect.')});
-        
+        if(!match) return res.status(400).send('The password you’ve entered is incorrect');
+        const token=jwt.sign({_id:user._id},process.env.TOKEN_SCRET);
+        res.json({token: `${token}`}); // auth-token is name whatever u want 
+
+        res.send('Loggin');
+    
+});
 
 module.exports=router;
