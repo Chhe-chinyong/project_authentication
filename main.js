@@ -1,13 +1,17 @@
 const express=require('express');
 const moment=require('moment');
 const mongoose=require('mongoose');
-const bodyParser =  require("body-parser")
 const app= express();
 const dotenv=require('dotenv');
+const chalk=require('chalk');
 dotenv.config();
+try{
 mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>{
-    console.log('Connected to DB ');
-});
+    console.log(chalk.black.bgGreen('Connected to DB '));
+});}
+catch(err){
+    console.log(chalk.red.bold(err));
+}
     // b brilliant Aglorithms
 // app.use(bodyParser.json())
 // let auth = (req, res, next) => {

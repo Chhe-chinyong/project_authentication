@@ -7,4 +7,5 @@ var UserSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 
+
 module.exports= mongoose.model('User', UserSchema);
