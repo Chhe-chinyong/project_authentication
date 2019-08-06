@@ -58,7 +58,7 @@ router.post('/login',async(req,res,next)=>{
         const token=  jwt.sign({_id:check._id},process.env.TOKEN_SECRET);
         //console.log('asd');
         //res.send(token);
-        res.json({token: `${token}`}); // auth-token is name whatever u want 
+        res.json({token: `${token}`}).send(token) // auth-token is name whatever u want 
         //res.header('auth-token',token).send(token);
         res.send('Loggin');
     
