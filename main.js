@@ -4,6 +4,8 @@ const mongoose=require('mongoose');
 const app= express();
 const dotenv=require('dotenv');
 const chalk=require('chalk');
+const cors = require("cors");
+
 dotenv.config();
 try{
 mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>{
@@ -12,6 +14,7 @@ mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>{
 catch(err){
     console.log(chalk.red.bold(err));
 }
+app.use(cors("*"));
     // b brilliant Aglorithms
 // app.use(bodyParser.json())
 // let auth = (req, res, next) => {
@@ -31,7 +34,7 @@ catch(err){
 //     res.json({message: "success"})
 // })
  app.use(express.json());
- app.use('/api',require('./routes/register'));
+ app.use('',require('./routes/register'));
 
-const Port=process.env.port||5000;
+const Port=3001;
 app.listen(Port,()=> console.log(`localhost://${Port}  ${moment().format()}`));

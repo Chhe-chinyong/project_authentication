@@ -11,7 +11,7 @@ const {registerValidation,loginValidation}=require('../validation');
 //Register
 router.post('/register',async(req,res,next)=>{
     const {error}=registerValidation(req.body);
-    if(error) {return res.status(400).send(error.details[0].message)};
+    if(error) {return res.status(400).json({error1:error.details[0].message})};
     
     const emailExist=await User.findOne({email:req.body.email});
     
@@ -22,7 +22,7 @@ router.post('/register',async(req,res,next)=>{
     const usernameExist=await User.findOne({username:req.body.username});
     
     if(usernameExist){
-        return res.status(400).send('Your username is exist');
+        return res.status(400).json({erro:'Your username is exist'});
     }
 
     const salt=await bcrypt.genSalt(10);
