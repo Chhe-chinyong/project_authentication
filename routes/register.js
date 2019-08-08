@@ -49,7 +49,7 @@ router.post('/login',async(req,res,next)=>{
     const {error}=loginValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
-        const check=await User.findOne({username:req.body.username});
+        const check=await User.findOne({email:req.body.email});
         if(!check) return res.status(400).send('The Username you’ve entered is incorrect.');
 
         const match = await bcrypt.compare(req.body.password, check.password);

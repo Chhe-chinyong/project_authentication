@@ -11,7 +11,7 @@ const registerValidation=(data)=>{
 
 const loginValidation=(data)=>{
     const schema={
-    username:Joi.string().trim().required(),
+    email:Joi.string().trim().required(),
     password:Joi.string().required()
 }
     //email:Joi.string().email().required()}
