@@ -5,7 +5,6 @@ const app= express();
 const dotenv=require('dotenv');
 const chalk=require('chalk');
 const cors = require("cors");
-
 dotenv.config();
 try{
 mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>{

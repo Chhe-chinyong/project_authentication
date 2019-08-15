@@ -4,6 +4,9 @@ const User=require('../model/user');
 const bcrypt = require('bcrypt');
 const jwt=require('jsonwebtoken');
 const Chalk=require('chalk');
+const passport=require('passport')
+const PassportSetup=require('../config/passport-setup')
+
 //Validation
 const {registerValidation,loginValidation}=require('../validation');
 
@@ -11,7 +14,7 @@ const {registerValidation,loginValidation}=require('../validation');
 //Register
 router.post('/register',async(req,res,next)=>{
     const {error}=registerValidation(req.body);
-    if(error) {return res.status(400).json({error1:error.details[0].message})};
+    if(error) {return res.json({error1:error.details[0].message})};
     
     const emailExist=await User.findOne({email:req.body.email});
     
@@ -43,7 +46,7 @@ router.post('/register',async(req,res,next)=>{
     }
 });
 
-
+// For client login 
 
 router.post('/login',async(req,res,next)=>{
     const {error}=loginValidation(req.body);
@@ -63,6 +66,20 @@ router.post('/login',async(req,res,next)=>{
         res.send('Loggin');
     
 });
+
+//For client login with Gmail
+
+router.get('/google',passport.authenticate('google',{
+    scope:['profile']
+})
+
+);
+
+router.get('/google/redirect',(req,res)=>{
+    res.send('u reach it');
+})
+
+
 
 module.exports=router;
 
