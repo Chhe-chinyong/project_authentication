@@ -13,7 +13,7 @@ mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>{
 catch(err){
     console.log(chalk.red.bold(err));
 }
-app.use(cors("*"));
+app.use(cors());
     // b brilliant Aglorithms
 // app.use(bodyParser.json())
 // let auth = (req, res, next) => {

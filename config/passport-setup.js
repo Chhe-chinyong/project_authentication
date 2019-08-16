@@ -7,7 +7,8 @@ passport.use(
         callbackURL:'/google/redirect',
         clientID:process.env.clientID,
         clientSecret:process.env.clientSECRET
-    },()=>{
-       // console.log('hello dogs')
+    },(accessToken,refreshToken,profile,done)=>{
+        console.log('on fire')
+        console.log(profile); 
     })
 );

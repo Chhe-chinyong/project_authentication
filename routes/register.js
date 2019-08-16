@@ -75,8 +75,12 @@ router.get('/google',passport.authenticate('google',{
 
 );
 
-router.get('/google/redirect',(req,res)=>{
-    res.send('u reach it');
+router.get('/google1',(req,res)=>{
+    res.json({"hello":"hello world"});
+})
+
+router.get('/google/redirect',passport.authenticate('google'),()=>{
+    console.log('bye')
 })
 
 
