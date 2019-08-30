@@ -8,4 +8,13 @@ var UserSchema = new mongoose.Schema({
 });
 
 
+// var BlogSchema=new mongoose.Schema({
+//     title:String,required,
+//     imageUrl:String,
+//     image: { data: Buffer, contentType: String },
+//     body:String,required,
+//     created:{type:Date, default:Date.now}
+// });
+
+//module.exports=mongoose.model('Blog',BlogSchema)
 module.exports= mongoose.model('User', UserSchema);

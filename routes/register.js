@@ -61,19 +61,35 @@ router.post('/login',async(req,res,next)=>{
         const token=  jwt.sign({_id:check._id},process.env.TOKEN_SECRET);
         //console.log('asd');
         //res.send(token);
-        res.json({token: `${token}`}).send(token) // auth-token is name whatever u want 
+        res.header('auth-token',token).send(token) // auth-token is name whatever u want 
         //res.header('auth-token',token).send(token);
         res.send('Loggin');
     
 });
 
+
+router.get('/logout',(req,res)=>{
+    req.logOut();
+    res.redirect('/');
+})
+
+
+
+
+
+
+
 //For client login with Gmail
 
 router.get('/google',passport.authenticate('google',{
-    scope:['profile']
-})
+    scope:['https://www.googleapis.com/auth/userinfo.email',
+          "profile"
+       ]
+}));
 
-);
+router.post('/google/redirect',passport.authenticate('google'),()=>{
+        console.log(_json.sub);
+})
 
 router.get('/google1',(req,res)=>{
     res.json({"hello":"hello world"});
