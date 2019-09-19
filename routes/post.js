@@ -3,6 +3,8 @@ const router=express.Router();
 const verify=require('./verifyToken');
 const Blog=require('../model/user');
 const fs = require('fs');
+const jwt=require('jsonwebtoken')
+//const User=require('../model/user');
 const multer=require('multer');
 const path=require('path');
 // router.post('/post',async(req,res)=>{
@@ -53,26 +55,52 @@ function checkFileType(file,cb){
 //Init uplord
 const upload=multer({
     storage:storage,
-    limits:{fileSize:1000000},
-    fileFilter:function(req,file,cb){
+    limits: {fileSize:1000000},
+    fileFilter: function(req,file,cb){
         checkFileType(file,cb);
 }
 }).single('img');
 
-
-
-
-
-
-router.post('/upload',(req,res)=>{
-    upload(req,res,(err)=>{
+router.post('/upload',async(req,res)=>{
+    upload(req,res,async(err)=>{
         if(err){
             res.status(401).send(err.message);
         }
-        else{
+        const token=req.header('auth-token');
+        const verified=jwt.verify(token,process.env.TOKEN_SECRET);
+        console.log(verified._id);
             console.log(req.file);
-            res.send('test');
-        }
+            const blog=new Blog({
+                userID:verified._id,
+                tag:req.body.tag,
+                title:req.body.title,
+                description:req.body.description,
+             //   image: `http://localhost:3001/public/uploads/${req.file.filename}`,
+            });
+        
+            try{
+                const saveBlog= await blog.save();
+                res.send('Save sucessful');
+            }
+            catch(err){
+                res.status(400).send(err);
+            
+            }
     });
 });
+    // const blog=new Blog({
+    //     title:req.body.title,
+    //     description:req.body.description,
+    //     image:{filename:req.file.filename(),
+    //             path:req.file.path()},
+    // });
+
+    // try{
+    //     const saveBlog=await blog.save();
+    //     res.send('Save sucessful');
+    // }
+    // catch(err){
+    //     res.status(400).send(err);
+    // }
+
 module.exports=router;

@@ -8,13 +8,13 @@ var UserSchema = new mongoose.Schema({
 });
 
 
-// var BlogSchema=new mongoose.Schema({
-//     title:String,required,
-//     imageUrl:String,
-//     image: { data: Buffer, contentType: String },
-//     body:String,required,
-//     created:{type:Date, default:Date.now}
-// });
+var BlogSchema=new mongoose.Schema({
+   
+    title:{type:String,required:true},
+    image: { path:String,filename:String },
+    description:{type:String,required:true},
+    created:{type:Date, default:Date.now}
+});
 
-//module.exports=mongoose.model('Blog',BlogSchema)
+module.exports=mongoose.model('Blog',BlogSchema)
 module.exports= mongoose.model('User', UserSchema);

@@ -14,6 +14,7 @@ mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>{
 catch(err){
     console.log(chalk.red.bold(err));
 }
+app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
     // b brilliant Aglorithms
