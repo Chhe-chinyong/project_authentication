@@ -1,7 +1,8 @@
 const express=require('express');
 const router=express.Router();
 const verify=require('./verifyToken');
-const Blog=require('../model/user');
+const models = require('../model/user');
+let { Blog } = models;
 const fs = require('fs');
 const jwt=require('jsonwebtoken')
 //const User=require('../model/user');
@@ -68,22 +69,33 @@ router.post('/upload',async(req,res)=>{
         }
         const token=req.header('auth-token');
         const verified=jwt.verify(token,process.env.TOKEN_SECRET);
-        console.log(verified._id);
-            console.log(req.file);
-            const blog=new Blog({
-                userID:verified._id,
-                tag:req.body.tag,
-                title:req.body.title,
-                description:req.body.description,
-             //   image: `http://localhost:3001/public/uploads/${req.file.filename}`,
-            });
+        console.log("verify is: ");
+        console.log(verified);
+            // console.log(req.file);
+            // let blog = new Blog({
+            //     userID:verified._id,
+            //     tag:req.body.tag,
+            //     title:req.body.title,
+            //     description:req.body.description,
+            //  // image: `http://localhost:3001/public/uploads/${req.file.filename}`,
+            // });
         
             try{
-                const saveBlog= await blog.save();
-                res.send('Save sucessful');
+                let new_blog = new Blog({
+                    userID: verified._id,
+                    tag: req.body.tag,
+                    title: req.body.title,
+                    description: req.body.description
+                })
+                new_blog.save((err, doc)=>{
+                    if(err) console.log(err);
+                   // console.log(doc)
+                    res.json(doc);
+                });
+                // .then(()=> console.log("done"))
             }
             catch(err){
-                res.status(400).send(err);
+                res.status(400).send("error");
             
             }
     });

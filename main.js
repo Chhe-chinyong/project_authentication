@@ -14,9 +14,10 @@ mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>{
 catch(err){
     console.log(chalk.red.bold(err));
 }
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(cors());
+
     // b brilliant Aglorithms
 // app.use(bodyParser.json())
 // let auth = (req, res, next) => {
@@ -36,8 +37,9 @@ app.use(cors());
 //     res.json({message: "success"})
 // })
  app.use(express.json());
- app.use('',require('./routes/register'));
- app.use('',require('./routes/post'));
+ app.use('/',require('./routes/post'));
+ app.use('/',require('./routes/register'));
+
 
 const Port=3001;
 app.listen(Port,()=> console.log(`localhost://${Port}  ${moment().format()}`));

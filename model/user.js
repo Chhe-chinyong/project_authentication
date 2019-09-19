@@ -9,12 +9,23 @@ var UserSchema = new mongoose.Schema({
 
 
 var BlogSchema=new mongoose.Schema({
-   
+    userID:{type: String},
     title:{type:String,required:true},
-    image: { path:String,filename:String },
+   // image: {type:String },
     description:{type:String,required:true},
-    created:{type:Date, default:Date.now}
+    created:{type:Date, default:Date.now},
+    tag:{type:String}
 });
 
-module.exports=mongoose.model('Blog',BlogSchema)
-module.exports= mongoose.model('User', UserSchema);
+var Image=new mongoose.Schema({
+    name:{type:String},
+    UserId:{type:Number}
+    
+});
+
+let models = {
+    Image: mongoose.model('Image',Image),
+    Blog: mongoose.model('Blog',BlogSchema),
+    User: mongoose.model('User', UserSchema)
+}
+module.exports= models;
