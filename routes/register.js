@@ -1,6 +1,6 @@
 const express=require('express');
 const router=express.Router();
-const User=require('../model/user');
+const user=require('../model/user');
 const bcrypt = require('bcrypt');
 const jwt=require('jsonwebtoken');
 const Chalk=require('chalk');
@@ -9,13 +9,13 @@ const PassportSetup=require('../config/passport-setup')
 
 //Validation
 const {registerValidation,loginValidation}=require('../validation');
-
+const {User}=user;
 
 //Register
 router.post('/register',async(req,res,next)=>{
     const {error}=registerValidation(req.body);
     if(error) {return res.json({error1:error.details[0].message})};
-    
+
     const emailExist=await User.findOne({email:req.body.email});
     
     if(emailExist){
@@ -63,7 +63,7 @@ router.post('/login',async(req,res,next)=>{
         //res.send(token);
         res.header('auth-token',token).send(token) // auth-token is name whatever u want 
         //res.header('auth-token',token).send(token);
-        res.send('Loggin');
+        //res.send('Loggin');
     
 });
 

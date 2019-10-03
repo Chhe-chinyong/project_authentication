@@ -8,29 +8,7 @@ const jwt=require('jsonwebtoken')
 //const User=require('../model/user');
 const multer=require('multer');
 const path=require('path');
-// router.post('/post',async(req,res)=>{
-//     const BlogUser = new Blog;
-//     BlogUser.image.data = fs.readFileSync(imgPath);
-//     BlogUser.img.contentType = 'image/png';
-//     var imgPath = req.body.image;
-//     imgPath.data=fs.readFileSync(imgPath);
-//     const BlogUser=new Blog({
-//         title:req.body.title,
-//         imageUrl:req.body.imageUrl,
-//         image:imgPath.data,
-//         image:imgPath.contentType,
-//         body:req.body.body,
-//     })
-//     try{
-//         const saveBlog=await BlogUser.save();
-//         res.send(saveBlog);
-//     }
-//     catch(err){
-//         res.status(400).send(err);
-//         // should go to place create blog template
-//     }
 
-// })
 // Set storage engine
 const storage=multer.diskStorage({
     destination:'./public/uploads',
@@ -85,8 +63,10 @@ router.post('/upload',async(req,res)=>{
                     userID: verified._id,
                     tag: req.body.tag,
                     title: req.body.title,
-                    description: req.body.description
+                    description: req.body.description,
+                    image: `http://localhost:3001/public/uploads/${req.file.filename}`
                 })
+             
                 new_blog.save((err, doc)=>{
                     if(err) console.log(err);
                    // console.log(doc)
@@ -95,7 +75,7 @@ router.post('/upload',async(req,res)=>{
                 // .then(()=> console.log("done"))
             }
             catch(err){
-                res.status(400).send("error");
+                res.status(400).send("error o1");
             
             }
     });
