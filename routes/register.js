@@ -111,13 +111,14 @@ router.post('/login',async(req,res,next)=>{
 router.get('/confirmation',async(req,res)=>{
     //auth();
    
-    const token=await Token.findOne({tokenUser:req.query.id},(err,token)=>{
+    const token= await Token.findOne({tokenUser:req.query.id});
         if(!token){
             res.status(404).send('unable to find a valid token');
         }
         console.log(token._userId);
-       const user= User.findOne({_id:token.tokenUser});
-       user.updateOne({confirmed:true});
+       const user= await User.findOne({_id:token._userId});
+       user.confirmed=true;
+       user.save();
        console.log(user.confirmed);
       // user.save();
       //  user.confirmed=true;
@@ -125,7 +126,6 @@ router.get('/confirmation',async(req,res)=>{
         //console.log('win');
     });
     
-});
    
 //     if((req.protocol+"://"+req.get('host'))=="http://localhost:3001")
 // {   
